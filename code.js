@@ -35,16 +35,7 @@ const robotOrientation = (orientation, instruction) => {
 }
 // console.log(robotOrientation('North','Left'))
 
-// const robotSmart = (orientation, direction) => {
-//   if (direction === 'Left'){
-//     return (orientation + 90) % 360
-//   }
-//   if (direction === 'Right'){
-//     return (orientation - 90) % 360
-//   }
 
-// }
-// console.log(robotSmart(90, 'Right'))
 
 // Robot- Movement
 
@@ -125,24 +116,13 @@ const moveRobot = (x0, y0, orientation0, instructions) => {
 }
 // console.log(moveRobot(1, 1, 'E', 'RFRFRFRF'))
 
-function compareTriplets(a, b) {
-  let alice = 0
-  let bob = 0
+// const robotSmart = (orientation, direction) => {
+//   if (direction === 'Left'){
+//     return (orientation + 90) % 360
+//   }
+//   if (direction === 'Right'){
+//     return (orientation - 90) % 360
+//   }
 
-  for (let i = 0; i < a.length; i++) {
-    if (a[i] > b[i]) {
-      alice = alice + 1
-    }
-    if (a[i] < b[i]) {
-      bob = bob + 1
-    }
-
-  }
-  return [alice, bob]
-
-}
-
-
-
-
-console.log(compareTriplets([17, 28, 30], [99, 16, 8]))
+// }
+// console.log(robotSmart(90, 'Right'))
