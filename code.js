@@ -4,6 +4,18 @@
 // Robot - Orientation
 
 
+// const robotSmart = (orientation, direction) => {
+//   if (direction === 'Left'){
+//     return (orientation + 90) % 360
+//   }
+//   if (direction === 'Right'){
+//     return (orientation - 90) % 360
+//   }
+
+// }
+// console.log(robotSmart(90, 'Right'))
+
+
 const robotOrientation = (orientation, instruction) => {
 
   if (orientation === 'N' && instruction === 'L') {
@@ -94,19 +106,30 @@ const moveRobotByOne = (x, y, orientation, instruction) => {
 }
 
 
-const moveRobot = (x0, y0, orientation0, instructions) => {
+const moveRobot = (x0, y0, orientation0, instructions, xMax, yMax) => {
+
   let x = x0
   let y = y0
   let orientation = orientation0
   const instructionArray = instructions.split('')
-  instructionArray.forEach(instruction => {
-    const newPosition = moveRobotByOne(x, y, orientation, instruction)
+
+  for (let i = 0; i < instructionArray.length; i++) {
+    // console.log('aa', x, y, orientation,  instructionArray[i])
+    if ((y === yMax && orientation === 'N' || x === xMax && orientation === 'E' || y === 0 && orientation === 'S' || x === 0 && orientation === 'W') && (instructionArray[i] === 'F')) {
+      return {
+        x: x,
+        y: y,
+        orientation: orientation,
+        lost: 'LOST',
+      }
+    }
+
+    const newPosition = moveRobotByOne(x, y, orientation, instructionArray[i])
     x = newPosition.x
     y = newPosition.y
     orientation = newPosition.orientation
-    console.log(x, y, orientation)
+
   }
-  )
 
   return {
     x: x,
@@ -114,15 +137,25 @@ const moveRobot = (x0, y0, orientation0, instructions) => {
     orientation: orientation,
   }
 }
-// console.log(moveRobot(1, 1, 'E', 'RFRFRFRF'))
+// console.log(moveRobot(3, 2, 'N', 'FRRFLLFFRRFLL', 5, 3))
 
-// const robotSmart = (orientation, direction) => {
-//   if (direction === 'Left'){
-//     return (orientation + 90) % 360
-//   }
-//   if (direction === 'Right'){
-//     return (orientation - 90) % 360
-//   }
+const moveAllRobots = (input) => {
+  const inputArray = input.split('\n')
+  const robotArray = []
+  for (let i = 1 ; i < inputArray.length - 1; i += 2) {
+    const robot = inputArray[i] + ' ' + inputArray[i + 1]
+    robotArray.push(robot)
 
-// }
-// console.log(robotSmart(90, 'Right'))
+  }
+  const xMax = inputArray[0][0]
+  const yMax = inputArray[0][2]
+  return robotArray
+
+
+
+}
+
+const sampleInput = '5 3\n1 1 E\nRFRFRFRF\n3 2 N\nFRRFLLFFRRFLL\n0 3 W\nLLFFFLFLFL'
+// console.log(sampleInput)
+
+console.log(moveAllRobots(sampleInput))
