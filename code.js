@@ -106,7 +106,7 @@ const moveRobotByOne = (x, y, orientation, instruction) => {
 }
 
 
-const moveRobot = (x0, y0, orientation0, instructions, xMax, yMax) => {
+const moveRobot = (x0, y0, orientation0, instructions, xMax, yMax, lostPositionArray) => {
 
   let x = x0
   let y = y0
@@ -114,20 +114,25 @@ const moveRobot = (x0, y0, orientation0, instructions, xMax, yMax) => {
   const instructionArray = instructions.split('')
 
   for (let i = 0; i < instructionArray.length; i++) {
-    // console.log('aa', x, y, orientation,  instructionArray[i])
     if ((y === yMax && orientation === 'N' || x === xMax && orientation === 'E' || y === 0 && orientation === 'S' || x === 0 && orientation === 'W') && (instructionArray[i] === 'F')) {
-      return {
-        x: x,
-        y: y,
-        orientation: orientation,
-        lost: 'LOST',
+      if (!lostPositionArray.some(position => position.x === 3 && position.y === 3 && position.orientation === 'N')) {
+        return {
+          x: x,
+          y: y,
+          orientation: orientation,
+          lost: 'LOST',
+        }
+      } else {
+        continue
       }
+
     }
 
     const newPosition = moveRobotByOne(x, y, orientation, instructionArray[i])
     x = newPosition.x
     y = newPosition.y
     orientation = newPosition.orientation
+
 
   }
 
@@ -136,27 +141,56 @@ const moveRobot = (x0, y0, orientation0, instructions, xMax, yMax) => {
     y: y,
     orientation: orientation,
   }
+
 }
-// console.log(moveRobot(3, 2, 'N', 'FRRFLLFFRRFLL', 5, 3))
+// console.log(moveRobot(0, 3, 'W', 'LLFFFLFLFL', 5, 3, [{ x: 3, y: 3, orientation: 'N' }]))
 
 const moveAllRobots = (input) => {
   const inputArray = input.split('\n')
   const robotArray = []
-  for (let i = 1 ; i < inputArray.length - 1; i += 2) {
+  for (let i = 1; i < inputArray.length - 1; i += 2) {
     const robot = inputArray[i] + ' ' + inputArray[i + 1]
     robotArray.push(robot)
+  }
+  const xMax = Number(inputArray[0][0])
+  const yMax = Number(inputArray[0][2])
+
+  const lostPositionArray = []
+  const finalPositionArray = []
+
+  for (let i = 0; i < robotArray.length; i++) {
+    const robot = robotArray[i].split(' ')
+    const x0 = Number(robot[0])
+    const y0 = Number(robot[1])
+    const orientation0 = robot[2]
+    const instructions = robot[3]
+
+    // console.log(robot)
+    const finalPosition = moveRobot(x0, y0, orientation0, instructions, xMax, yMax, lostPositionArray)
+
+    if (finalPosition.lost === 'LOST') {
+      lostPositionArray.push(finalPosition)
+    }
+
+    finalPositionArray.push(finalPosition)
+
 
   }
-  const xMax = inputArray[0][0]
-  const yMax = inputArray[0][2]
-  
-  
+
+  return finalPositionArray
+
+
+
+
+
+
 
 
 
 }
 
 const sampleInput = '5 3\n1 1 E\nRFRFRFRF\n3 2 N\nFRRFLLFFRRFLL\n0 3 W\nLLFFFLFLFL'
-// console.log(sampleInput)
+
+console.log(sampleInput)
 
 console.log(moveAllRobots(sampleInput))
