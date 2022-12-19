@@ -149,7 +149,8 @@ const moveAllRobots = (input) => {
   }
   const xMax = inputArray[0][0]
   const yMax = inputArray[0][2]
-  return robotArray
+  
+  
 
 
 
