@@ -115,7 +115,7 @@ const moveRobot = (x0, y0, orientation0, instructions, xMax, yMax, lostPositionA
 
   for (let i = 0; i < instructionArray.length; i++) {
     if ((y === yMax && orientation === 'N' || x === xMax && orientation === 'E' || y === 0 && orientation === 'S' || x === 0 && orientation === 'W') && (instructionArray[i] === 'F')) {
-      if (!lostPositionArray.some(position => position.x === 3 && position.y === 3 && position.orientation === 'N')) {
+      if (!lostPositionArray.some(position => position.x === x && position.y === y && position.orientation === orientation)) {
         return {
           x: x,
           y: y,
@@ -158,8 +158,19 @@ const moveAllRobots = (input) => {
   const lostPositionArray = []
   const finalPositionArray = []
 
+
+  const robotArrayCleaned = robotArray.map(element => element.split(' '))
+  // console.log(robotArrayCleaned)
+  for (let i = 0; i < robotArrayCleaned.length; i++) {
+    if (Number(robotArrayCleaned[i][0]) > 50 || Number(robotArrayCleaned[i][1]) > 50 || robotArrayCleaned[i][3].length > 99) {
+      return 'Please make sure all coordinates are 50 or below and instruction strings are less than 100'
+    }
+    // console.log(robotArrayCleaned[i][0] )
+
+  }
+
   for (let i = 0; i < robotArray.length; i++) {
-    const robot = robotArray[i].split(' ')
+    const robot = robotArrayCleaned[i]
     const x0 = Number(robot[0])
     const y0 = Number(robot[1])
     const orientation0 = robot[2]
@@ -175,22 +186,31 @@ const moveAllRobots = (input) => {
     finalPositionArray.push(finalPosition)
 
 
+
   }
 
-  return finalPositionArray
+  const intermediateDataArray = []
+  
+  for (let i = 0; i < finalPositionArray.length; i++) {
+    if (finalPositionArray[i].lost === 'LOST') {
+      const newString = String(finalPositionArray[i].x) + ' ' + String(finalPositionArray[i].y) + ' ' + finalPositionArray[i].orientation + ' ' + finalPositionArray[i].lost
+      intermediateDataArray.push(newString)
+      
+    } else {
+      const newString = String(finalPositionArray[i].x) + ' ' + String(finalPositionArray[i].y) + ' ' + finalPositionArray[i].orientation
+      intermediateDataArray.push(newString)
 
+    }
 
+  }
 
+  const userOutputFinal = intermediateDataArray.join('\n')
 
-
-
-
+  return userOutputFinal
+ 
 
 
 }
 
-const sampleInput = '5 3\n1 1 E\nRFRFRFRF\n3 2 N\nFRRFLLFFRRFLL\n0 3 W\nLLFFFLFLFL'
 
-console.log(sampleInput)
-
-console.log(moveAllRobots(sampleInput))
+console.log(moveAllRobots('5 3\n1 1 E\nRFRFRFRF\n3 2 N\nFRRFLLFFRRFLL\n0 3 W\nLLFFFLFLFL'))
