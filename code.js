@@ -169,7 +169,10 @@ const moveAllRobots = (input) => {
 
   }
 
-  for (let i = 0; i < robotArray.length; i++) {
+  console.log(robotArray)
+  console.log(robotArrayCleaned)
+
+  for (let i = 0; i < robotArrayCleaned.length; i++) {
     const robot = robotArrayCleaned[i]
     const x0 = Number(robot[0])
     const y0 = Number(robot[1])
