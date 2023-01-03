@@ -1,20 +1,5 @@
-// Helper-functions
-
-
+const isInputValid = require( './valid input.js')
 // Robot - Orientation
-
-
-// const robotSmart = (orientation, direction) => {
-//   if (direction === 'Left'){
-//     return (orientation + 90) % 360
-//   }
-//   if (direction === 'Right'){
-//     return (orientation - 90) % 360
-//   }
-
-// }
-// console.log(robotSmart(90, 'Right'))
-
 
 const robotOrientation = (orientation, instruction) => {
 
@@ -146,6 +131,9 @@ const moveRobot = (x0, y0, orientation0, instructions, xMax, yMax, lostPositionA
 // console.log(moveRobot(0, 3, 'W', 'LLFFFLFLFL', 5, 3, [{ x: 3, y: 3, orientation: 'N' }]))
 
 const moveAllRobots = (input) => {
+  if (!isInputValid.isInputValid(input)) {
+    return 'Please make sure that your input is valid'
+  }
   const inputArray = input.split('\n')
   const robotArray = []
   for (let i = 1; i < inputArray.length - 1; i += 2) {
@@ -161,16 +149,9 @@ const moveAllRobots = (input) => {
 
   const robotArrayCleaned = robotArray.map(element => element.split(' '))
   // console.log(robotArrayCleaned)
-  for (let i = 0; i < robotArrayCleaned.length; i++) {
-    if (Number(robotArrayCleaned[i][0]) > 50 || Number(robotArrayCleaned[i][1]) > 50 || robotArrayCleaned[i][3].length > 99) {
-      return 'Please make sure all coordinates are 50 or below and instruction strings are less than 100'
-    }
-    // console.log(robotArrayCleaned[i][0] )
 
-  }
-
-  console.log(robotArray)
-  console.log(robotArrayCleaned)
+  // console.log(robotArray)
+  // console.log(robotArrayCleaned)
 
   for (let i = 0; i < robotArrayCleaned.length; i++) {
     const robot = robotArrayCleaned[i]
